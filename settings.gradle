@@ -15,5 +15,5 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "MoviesApp"
+rootProject.name = "MoviesApp-Compose"
 include ':app'
