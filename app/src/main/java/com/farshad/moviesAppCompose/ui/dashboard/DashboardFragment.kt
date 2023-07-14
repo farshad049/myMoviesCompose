@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.farshad.moviesAppCompose.databinding.FragmentDashboardBinding
 import com.farshad.moviesAppCompose.ui.dashboard.epoxy.DashboardEpoxyController
 import com.farshad.moviesAppCompose.ui.dashboard.epoxy.DashboardOnClicks
+import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,29 +36,33 @@ class DashboardFragment: Fragment() {
         val controller = DashboardEpoxyController( requireContext(),onClicks)
 
 
-//        dashboardViewModel.topAndGenresLiveData.distinctUntilChanged().observe(viewLifecycleOwner){(top,genre)->
-//           controller.setData(top,genre)
+
+
+//        dashboardViewModel.combinedData.asLiveData().observe(viewLifecycleOwner){
+//            controller.setData(it.movie , it.genre)
+//        }
+//
+//        binding.epoxyRecyclerView.setController(controller)
+//
+//
+//
+//
+//        //on swipe to refresh
+//        binding.swipeToRefresh.setOnRefreshListener {
+//
+//            dashboardViewModel.getFirstPageMovie()
+//            dashboardViewModel.getAllGenres()
+//
+//            binding.epoxyRecyclerView.setController(controller)
+//            binding.swipeToRefresh.isRefreshing = false
 //        }
 
 
 
-        dashboardViewModel.combinedData.asLiveData().observe(viewLifecycleOwner){
-            controller.setData(it.movie , it.genre)
-        }
-
-        binding.epoxyRecyclerView.setController(controller)
-
-
-
-
-        //on swipe to refresh
-        binding.swipeToRefresh.setOnRefreshListener {
-
-            dashboardViewModel.getFirstPageMovie()
-            dashboardViewModel.getAllGenres()
-
-            binding.epoxyRecyclerView.setController(controller)
-            binding.swipeToRefresh.isRefreshing = false
+        binding.myComposable.setContent {
+            AppTheme() {
+                DashboardScreenWithViewModel()
+            }
         }
 
 
@@ -84,15 +89,7 @@ class DashboardFragment: Fragment() {
     }//FUN
 
 
-//    override fun onGenreClick(genreId: Int,genreName:String) {
-//        val directions= DashboardFragmentDirections.actionDashboardFragmentToMovieListByGenre(genreId,genreName)
-//        findNavController().navigate(directions)
-//    }
-//
-//    override fun onMovieClick(movieId:Int){
-//        val directions= NavGraphDirections.actionGlobalToMovieDetailFragment(movieId)
-//        findNavController().navigate(directions)
-//    }
+
 
 
 

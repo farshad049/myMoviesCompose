@@ -8,4 +8,9 @@
     <color name="teal_700">#c17900</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="md_theme_light_tertiaryContainer">#FFFFDBC7</color>
+    <color name="md_theme_dark_tertiaryContainer">#FF733600</color>
+
+
 </resources>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/purple_700</item>
-        <item name="statusBarBackground">@color/purple_700</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_round_local_movies_24</item>
+        <item name="windowSplashScreenBackground">@color/md_theme_light_tertiaryContainer</item>
+        <item name="statusBarBackground">@color/md_theme_light_tertiaryContainer</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/movie_icon</item>
         <item name="postSplashScreenTheme">@style/Theme.MoviesApp</item>
+
     </style>
 </resources>

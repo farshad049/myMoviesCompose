@@ -12,8 +12,8 @@ class DashboardRepository @Inject constructor(
 ){
 
 
-    suspend fun getFirstPageMovie():List<DomainMovieModel>{
-        val response= apiClient.getFirstMoviePage()
+    suspend fun getMovieByPage(pageNumber: Int):List<DomainMovieModel>{
+        val response= apiClient.getMoviesPaging(pageNumber)
         if (!response.isSuccessful){
             return emptyList()
         }

@@ -22,7 +22,7 @@ class ApiClient (private val movieService: MovieService){
     }
 
     suspend fun getFirstMoviePage(): SimpleResponse<PagingModel> {
-        return safeApiCall { movieService.getFirstPageMovie() }
+        return safeApiCall { movieService.getMovieByPage() }
     }
 
     suspend fun getAllGenres(): SimpleResponse<List<GenresModel>> {

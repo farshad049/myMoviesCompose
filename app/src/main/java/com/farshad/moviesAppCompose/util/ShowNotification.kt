@@ -42,7 +42,7 @@ class ShowNotification @Inject constructor(val activity : Activity,val context :
 
 
         val builder = NotificationCompat.Builder(context , Constants.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_round_local_movies_24)
+            .setSmallIcon(R.drawable.movie_icon)
             .setContentTitle(title)
             .setContentText(channelDescription)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -95,7 +95,7 @@ class ShowNotification @Inject constructor(val activity : Activity,val context :
             .setBigContentTitle(title)
 
         val builder = NotificationCompat.Builder(context , Constants.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_round_local_movies_24)
+            .setSmallIcon(R.drawable.movie_icon)
             .setContentTitle(title)
             .setContentText(channelDescription)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

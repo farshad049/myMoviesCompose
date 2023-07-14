@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.farshad.moviesAppCompose.data.model.domain.DomainMovieModel
 import com.farshad.moviesAppCompose.data.model.network.GenresModel
 import com.farshad.moviesAppCompose.data.model.ui.Resource
-import com.farshad.moviesAppCompose.ui.dashboard.model.UiMovieAndGenre
+import com.farshad.moviesAppCompose.ui.dashboard.model.DashboardUiModel
 import com.farshad.moviesAppCompose.data.repository.DashboardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -17,7 +17,7 @@ class DashboardViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
-        getFirstPageMovie()
+        getFirstAndSecondMoviePage()
         getAllGenres()
     }
 
@@ -27,9 +27,12 @@ class DashboardViewModel @Inject constructor(
     private val _allGenresMovieFlow= MutableStateFlow<Resource<List<GenresModel>>>(Resource.Loading)
     val allGenresMovieFlow = _allGenresMovieFlow.asStateFlow()
 
-    fun getFirstPageMovie(){
+
+    fun getFirstAndSecondMoviePage(){
         viewModelScope.launch {
-            val response= repository.getFirstPageMovie()
+            val first10Movies= repository.getMovieByPage(1)
+            val second10Movies= repository.getMovieByPage(2)
+            val response = first10Movies + second10Movies
             if (response.isNotEmpty()) _firstPageMovieFlow.emit(Resource.Success(response))
         }
     }
@@ -42,45 +45,31 @@ class DashboardViewModel @Inject constructor(
     }
 
 
-    val combinedData : Flow<UiMovieAndGenre> =
-            combine(
-                firstPageMovieFlow,
-                allGenresMovieFlow
-            ){listOfMovie , listOfGenre ->
-                if (listOfMovie is Resource.Success && listOfGenre is Resource.Success){
-                    return@combine  UiMovieAndGenre(
-                        movie = listOfMovie.data,
-                        genre = listOfGenre.data
-                    )
-                }else{
-                    return@combine UiMovieAndGenre(
-                        emptyList(),
-                        emptyList()
-                    )
-                }
-            }
-
-
-
-
-//    val topAndGenresLiveData: LiveData<Pair<List<DomainMovieModel?>, List<GenresModel?>>> =
-//        object: MediatorLiveData<Pair<List<DomainMovieModel?>, List<GenresModel?>>>() {
-//            var topMovies: List<DomainMovieModel?> = emptyList()
-//            var genresList: List<GenresModel?> = emptyList()
-//            init {
-//                addSource(firstPageMovieLiveData) { top ->
-//                    topMovies = top
-//                   // genresList?.let { value = top to it }
-//
-//                    value = top to genresList
-//                }
-//                addSource(allGenresMovieLiveData) { genre ->
-//                    genresList = genre
-//                   // topMovies?.let { value = it to genre }
-//                    value = topMovies to genre
-//                }
-//            }
-//        }
+   val combinedData : Flow<Resource<DashboardUiModel>> =
+          combine(
+             firstPageMovieFlow,
+             allGenresMovieFlow
+         ){listOfMovie , listOfGenre ->
+              val genreAndMovie=
+             if (listOfMovie is Resource.Success && listOfGenre is Resource.Success){
+                 val randomMovie = listOfMovie.data.shuffled().take(5)
+                  Resource.Success(
+                     DashboardUiModel(
+                         movie = listOfMovie.data,
+                         genre = listOfGenre.data,
+                         randomMovies = randomMovie
+                     )
+                  )
+             }else{
+                 Resource.Loading
+             }
+              return@combine genreAndMovie
+         }.stateIn(
+             scope = viewModelScope,
+             started = SharingStarted.WhileSubscribed(),
+             initialValue = Resource.Loading
+         )
+    }
 
 
 
@@ -88,4 +77,4 @@ class DashboardViewModel @Inject constructor(
 
 
 
-}
+

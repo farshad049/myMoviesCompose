@@ -97,7 +97,7 @@ fun AppTheme(
     val systemUiController= rememberSystemUiController()
     SideEffect {
         systemUiController.setSystemBarsColor(
-            color = if (darkTheme) md_theme_light_primary else md_theme_dark_primary
+            color = if (darkTheme) md_theme_dark_primaryContainer else md_theme_light_primaryContainer
         )
     }
 

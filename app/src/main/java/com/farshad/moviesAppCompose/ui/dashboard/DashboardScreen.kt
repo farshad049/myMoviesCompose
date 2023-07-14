@@ -1,121 +1,121 @@
 package com.farshad.moviesAppCompose.ui.dashboard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.farshad.moviesAppCompose.R
+import com.farshad.moviesAppCompose.data.model.ui.Resource
+import com.farshad.moviesAppCompose.ui.dashboard.model.DashboardUiModel
 import com.farshad.moviesAppCompose.uiCompose.comon.HeaderWithViewAll
+import com.farshad.moviesAppCompose.uiCompose.comon.ImageThumbnailRow
+import com.farshad.moviesAppCompose.uiCompose.comon.LoadingAnimation
+import com.farshad.moviesAppCompose.uiCompose.comon.SuggestionChipRow
 import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
-
-val image="https://m.media-amazon.com/images/M/MV5BMTQ5NTI4NDAxMV5BMl5BanBnXkFtZTcwMTQxNDY3Mw@@._V1_.jpg"
+import com.farshad.moviesAppCompose.util.DarkAndLightPreview
+import com.farshad.moviesAppCompose.util.SampleDomainMovieModel
 
 @Composable
-fun DashboardScreen(){
+fun DashboardScreen(
+    movieAndGenre: DashboardUiModel,
+    onImageClick: (Int) -> Unit,
+    onCategoryChipClick: (Int) -> Unit,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize().padding(vertical = 8.dp).verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RandomMovieImage(modifier = Modifier
-                .padding(all = 6.dp)
-                .weight(4f), imageUrl = image)
+
+
+            DashboardImageThumbnailRow(
+                modifier = Modifier.height(310.dp),
+                movies = movieAndGenre.randomMovies,
+                onClick = onImageClick
+            )
 
             HeaderWithViewAll(
-                modifier = Modifier.weight(3f),
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
                 title = stringResource(id = R.string.categories),
                 onViewAllClick = {}
             )
-        }
 
-    }
-}
-
-@Composable
-fun RandomMovieImage(
-    modifier: Modifier= Modifier,
-    imageUrl: String
-){
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .height(130.dp)
-        .shadow(elevation = 8.dp)
-        .background(
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.outline
-        )
-        .clip(MaterialTheme.shapes.medium)
-        .border(
-            width = 1.dp,
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.primary
-        )
-        .drawWithCache {
-            val gradient = Brush.verticalGradient(
-                colors = listOf(Color.Transparent, Color.Black),
-                startY = size.height / 3,
-                endY = size.height
+            SuggestionChipRow(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                genreChipList = movieAndGenre.genre,
+                onClick = { onCategoryChipClick(it) }
             )
-            onDrawWithContent {
-                drawContent()
-                drawRect(gradient, blendMode = BlendMode.Multiply)
-            }
+
+            HeaderWithViewAll(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                title = stringResource(id = R.string.top_rated_movies),
+                onViewAllClick = {}
+            )
+
+            ImageThumbnailRow(
+                movies = movieAndGenre.movie,
+                onClick = {}
+            )
+
         }
-        ,
-        contentAlignment = Alignment.Center
-    ) {
-        AsyncImage(
-            modifier = Modifier.fillMaxSize(),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(500)
-                .error(R.drawable.ic_baseline_priority_high_24)
-                .build(),
-            placeholder = painterResource(id = R.drawable.place_holder) ,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-        )
+
     }
 }
 
-
-
-
-
-
-
-@Preview(showBackground = true)
 @Composable
-private fun Preview(){
-    AppTheme(darkTheme = false) {
-        DashboardScreen()
+fun DashboardScreenWithViewModel(
+    dashboardViewModel: DashboardViewModel = hiltViewModel()
+) {
+    val data by dashboardViewModel.combinedData.collectAsStateWithLifecycle(initialValue = Resource.Loading)
+
+    when (data) {
+        is Resource.Success -> {
+//            DashboardScreen(
+//                movieAndGenre = (data as Resource.Success<DashboardUiModel>).data,
+//                onImageClick = {},
+//                onCategoryChipClick = {}
+//            )
+            LoadingAnimation()
+        }
+
+        is Resource.Loading -> {
+            LoadingAnimation()
+        }
+        else -> {}
+    }
+
+}
+
+
+@DarkAndLightPreview
+@Composable
+private fun Preview(
+    @PreviewParameter(SampleDomainMovieModel::class) movieAndGenre: DashboardUiModel
+) {
+    AppTheme() {
+        DashboardScreen(
+            movieAndGenre = movieAndGenre,
+            onImageClick = {},
+            onCategoryChipClick = {}
+        )
     }
 }
