@@ -40,8 +40,8 @@ class SubmitMovieBase64: Fragment(){
     private var path : String=""
     private val submitBase64ViewModel: SubmitBase64ViewModel by viewModels()
 
-    @Inject
-    lateinit var  convertors : Convertors
+//    @Inject
+//    lateinit var  convertors : Convertors
 
     @Inject
     lateinit var getPermission : GetPermission
@@ -158,8 +158,8 @@ class SubmitMovieBase64: Fragment(){
                 lifecycleScope.launch {
                     currentImageUri = data?.data
                     binding.ivPoster.load(data?.data)
-                    val bitmap = convertors.convertUriToBitmap(requireContext() , data?.data!!)
-                    path = convertors.convertBitmapTOBase64(bitmap)
+                    val bitmap = Convertors().convertUriToBitmap(requireContext() , data?.data!!)
+                    path = Convertors().convertBitmapTOBase64(bitmap)
                     LoadingDialog.hideLoading()
                 }
             }  else {

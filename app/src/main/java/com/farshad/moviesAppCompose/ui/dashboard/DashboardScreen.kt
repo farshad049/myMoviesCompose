@@ -1,7 +1,6 @@
 package com.farshad.moviesAppCompose.ui.dashboard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +24,7 @@ import com.farshad.moviesAppCompose.ui.dashboard.model.DashboardUiModel
 import com.farshad.moviesAppCompose.uiCompose.comon.HeaderWithViewAll
 import com.farshad.moviesAppCompose.uiCompose.comon.ImageThumbnailRow
 import com.farshad.moviesAppCompose.uiCompose.comon.LoadingAnimation
-import com.farshad.moviesAppCompose.uiCompose.comon.SuggestionChipRow
+import com.farshad.moviesAppCompose.uiCompose.comon.SuggestionChipLazyRow
 import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
 import com.farshad.moviesAppCompose.util.DarkAndLightPreview
 import com.farshad.moviesAppCompose.util.SampleDomainMovieModel
@@ -59,9 +58,9 @@ fun DashboardScreen(
                 onViewAllClick = {}
             )
 
-            SuggestionChipRow(
+            SuggestionChipLazyRow(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                genreChipList = movieAndGenre.genre,
+                list = movieAndGenre.genre,
                 onClick = { onCategoryChipClick(it) }
             )
 
@@ -89,12 +88,11 @@ fun DashboardScreenWithViewModel(
 
     when (data) {
         is Resource.Success -> {
-//            DashboardScreen(
-//                movieAndGenre = (data as Resource.Success<DashboardUiModel>).data,
-//                onImageClick = {},
-//                onCategoryChipClick = {}
-//            )
-            LoadingAnimation()
+            DashboardScreen(
+                movieAndGenre = (data as Resource.Success<DashboardUiModel>).data,
+                onImageClick = {},
+                onCategoryChipClick = {}
+            )
         }
 
         is Resource.Loading -> {

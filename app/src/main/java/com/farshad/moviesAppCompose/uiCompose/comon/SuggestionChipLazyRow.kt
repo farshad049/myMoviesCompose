@@ -15,19 +15,17 @@ import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
 import com.farshad.moviesAppCompose.util.DarkAndLightPreview
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.farshad.moviesAppCompose.util.SampleGenresModel
 
 @Composable
-fun SuggestionChipRow(
+fun SuggestionChipLazyRow(
     modifier: Modifier= Modifier,
-    genreChipList: List<GenresModel>,
+    list: List<GenresModel>,
     onClick: (Int)-> Unit
 ){
-    val listForRow by remember { mutableStateOf(genreChipList) }
+    val listForRow by remember { mutableStateOf(list) }
 
     LazyRow(
         modifier = modifier,
@@ -68,8 +66,8 @@ fun ChipSuggestionItem(
 private fun Preview(
     @PreviewParameter(SampleGenresModel::class) genreItem: GenresModel){
     AppTheme() {
-        SuggestionChipRow(
-            genreChipList = listOf(genreItem),
+        SuggestionChipLazyRow(
+            list = listOf(genreItem),
             onClick = {}
         )
     }

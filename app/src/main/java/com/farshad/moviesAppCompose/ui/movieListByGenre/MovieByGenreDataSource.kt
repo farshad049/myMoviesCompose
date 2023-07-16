@@ -9,7 +9,7 @@ import com.farshad.moviesAppCompose.data.remote.ApiClient
 import com.farshad.moviesAppCompose.data.remote.SimpleResponse
 import javax.inject.Inject
 
-class MovieByGenreDataSource @Inject constructor(
+class MovieByGenreDataSource (
     private val apiClient: ApiClient,
     private val movieMapper: MovieMapper,
     private val genreId:Int,

@@ -5,6 +5,5 @@
         <item name="statusBarBackground">@color/md_theme_light_tertiaryContainer</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_wrapped</item>
         <item name="postSplashScreenTheme">@style/Theme.MoviesApp</item>
-
     </style>
 </resources>

@@ -7,21 +7,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,24 +36,42 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.farshad.moviesAppCompose.R
-import com.farshad.moviesAppCompose.data.db.Entity.FavoriteMovieEntity
 import com.farshad.moviesAppCompose.data.model.domain.DomainMovieModel
-import com.farshad.moviesAppCompose.ui.movieDetail.model.UiMovieDetailModel
-import com.farshad.moviesAppCompose.uiCompose.comon.model.UiModelMovieWithFavorite
+import com.farshad.moviesAppCompose.ui.dashboard.model.DashboardUiModel
 import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
-import com.farshad.moviesAppCompose.uiCompose.theme.myRed
 import com.farshad.moviesAppCompose.uiCompose.theme.myYellow
 import com.farshad.moviesAppCompose.util.Convertors
 import com.farshad.moviesAppCompose.util.DarkAndLightPreview
 import com.farshad.moviesAppCompose.util.SampleDomainMovieModel
 
+@Composable
+fun MovieHorizontalLazyColumn(
+    modifier: Modifier= Modifier,
+    movieList: List<DomainMovieModel>,
+    onRowClick: (Int)-> Unit,
+){
+    val listForRow by remember { mutableStateOf(movieList) }
+
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ){
+        items(
+            items = listForRow, key = {it.id.hashCode()}
+        ){item->
+            MovieHorizontalItem(
+                movie = item,
+                onRowClick = {onRowClick(it)}
+            )
+        }
+    }
+}
 
 @Composable
 fun MovieHorizontalItem(
     modifier: Modifier = Modifier,
-    movieWithFavorite: UiModelMovieWithFavorite,
+    movie: DomainMovieModel,
     onRowClick: (Int)-> Unit,
-    onFavoriteClick: (FavoriteMovieEntity)-> Unit
 ){
     Box(
         modifier = modifier
@@ -65,14 +83,14 @@ fun MovieHorizontalItem(
                 shape = MaterialTheme.shapes.medium
             )
             .clip(shape = MaterialTheme.shapes.medium)
-            .clickable { onRowClick(movieWithFavorite.movie.id) }
+            .clickable { onRowClick(movie.id) }
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.fillMaxSize().weight(1.1f)) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(movieWithFavorite.movie.poster)
+                        .data(movie.poster)
                         .crossfade(500)
                         .error(R.drawable.ic_baseline_priority_high_24)
                         .build(),
@@ -83,7 +101,7 @@ fun MovieHorizontalItem(
             }
             Column(modifier= Modifier.weight(3f)) {
                 Text(
-                    text = movieWithFavorite.movie.title,
+                    text = movie.title,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = TextStyle(
@@ -93,26 +111,10 @@ fun MovieHorizontalItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = Convertors().convertListToText(movieWithFavorite.movie.genres),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                    )
-                    IconButton(
-                        onClick = { onFavoriteClick(FavoriteMovieEntity(id = movieWithFavorite.movie.id, title = movieWithFavorite.movie.title)) }
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            imageVector = if (movieWithFavorite.isFavorite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                            tint = myRed,
-                            contentDescription =""
-                        )
-                    }
-                }
+                Text(
+                    text = Convertors().convertListToText(movie.genres),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -122,7 +124,7 @@ fun MovieHorizontalItem(
                         contentDescription =""
                     )
                     Text(
-                        text = movieWithFavorite.movie.imdb_rating,
+                        text = movie.imdb_rating,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(16.dp))
@@ -132,7 +134,7 @@ fun MovieHorizontalItem(
                         contentDescription =""
                     )
                     Text(
-                        text = movieWithFavorite.movie.runTime,
+                        text = movie.runTime,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     
@@ -148,15 +150,18 @@ fun MovieHorizontalItem(
 
 
 
-@DarkAndLightPreview
-@Composable
-private fun Preview(@PreviewParameter(SampleDomainMovieModel::class) movie: DomainMovieModel){
-    AppTheme() {
-        MovieHorizontalItem(
-            movieWithFavorite = UiModelMovieWithFavorite(movie = movie, isFavorite = true),
-            onRowClick = {},
-            onFavoriteClick = {}
-        )
-    }
+//@DarkAndLightPreview
+//@Composable
+//private fun Preview(@PreviewParameter(SampleDomainMovieModel::class) movieAndGenre: DashboardUiModel){
+//    AppTheme() {
+////        MovieHorizontalItem(
+////            movie = movie,
+////            onRowClick = {},
+////        )
+//        MovieHorizontalLazyColumn(
+//            movieList =  movieAndGenre.movie,
+//            onRowClick = {}
+//        )
+//    }
+//}
 
-}

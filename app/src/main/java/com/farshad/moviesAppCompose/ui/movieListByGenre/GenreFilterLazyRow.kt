@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,19 +17,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.farshad.moviesAppCompose.data.model.network.GenresModel
 import com.farshad.moviesAppCompose.ui.movieListByGenre.model.UiGenresModel
-import com.farshad.moviesAppCompose.uiCompose.comon.ChipSuggestionItem
 import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
 import com.farshad.moviesAppCompose.util.DarkAndLightPreview
 
 
-
 @Composable
-fun GenreTabRow(
+fun GenreFilterLazyRow(
     modifier: Modifier= Modifier,
-    genreList: List<UiGenresModel>,
+    list: List<UiGenresModel.GenreWithFavorite>,
     onClick: (GenresModel)-> Unit
 ){
-    val listForRow by remember { mutableStateOf(genreList) }
+    val listForRow by remember { mutableStateOf(list) }
 
     LazyRow(
         modifier = modifier,
@@ -38,7 +36,7 @@ fun GenreTabRow(
         items(
             items = listForRow, key = {it.hashCode()}
         ){item->
-            GenreTabItem(
+            GenreFilterItem(
                 uiGenresModel = item,
                 onClick = {onClick(it)}
                 )
@@ -51,8 +49,8 @@ fun GenreTabRow(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GenreTabItem(
-    uiGenresModel: UiGenresModel,
+fun GenreFilterItem(
+    uiGenresModel: UiGenresModel.GenreWithFavorite,
     onClick: (GenresModel) -> Unit
 ){
     FilterChip(
@@ -78,8 +76,8 @@ fun GenreTabItem(
 private fun Preview(){
     AppTheme() {
         Column() {
-            GenreTabItem(
-                uiGenresModel = UiGenresModel(genre = GenresModel(id = 1, name = "comedy"),isSelected = false),
+            GenreFilterItem(
+                uiGenresModel = UiGenresModel.GenreWithFavorite(genre = GenresModel(id = 1, name = "comedy"),isSelected = false),
                 onClick = {}
             )
 

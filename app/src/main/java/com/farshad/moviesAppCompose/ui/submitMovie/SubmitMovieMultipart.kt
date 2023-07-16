@@ -42,8 +42,8 @@ class SubmitMovieMultipart: Fragment() {
     private var imageRequestBody: MultipartBody.Part?= null
     private var currentImageUri: Uri? = null
 
-    @Inject
-    lateinit var  convertors : Convertors
+//    @Inject
+//    lateinit var  convertors : Convertors
 
     @Inject
     lateinit var getPermission : GetPermission
@@ -160,7 +160,7 @@ class SubmitMovieMultipart: Fragment() {
                     binding.ivPoster.load(data?.data)
                     currentImageUri=data?.data
                     val imageRealPath = RealPathUtil.getRealPath(requireContext(),data?.data)
-                    imageRequestBody = convertors.convertImagePathToRequestBody(imageRealPath , "poster")
+                    imageRequestBody = Convertors().convertImagePathToRequestBody(imageRealPath , "poster")
                     LoadingDialog.hideLoading()
                 }
             }  else {

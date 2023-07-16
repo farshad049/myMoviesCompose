@@ -37,8 +37,8 @@ val sampleMovie2= DomainMovieModel(
 
 )
 val sampleMovie3= DomainMovieModel(
-    actors = "farshad",
-    country = "Iran",
+    actors = "farshad2",
+    country = "Iran2",
     director = "Alex",
     genres = listOf("comedy2","action2","dram2"),
     id = 3,
