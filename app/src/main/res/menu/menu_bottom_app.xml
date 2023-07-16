@@ -10,7 +10,7 @@
         />
     <item
         android:id="@+id/movieList"
-        android:icon="@drawable/movie_icon"
+        android:icon="@drawable/movies"
         android:orderInCategory="2"
         android:title=""
         app:showAsAction="ifRoom"

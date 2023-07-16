@@ -17,7 +17,8 @@ val sampleMovie1= DomainMovieModel(
     poster = "rty",
     rated = "R",
     title = "movie title",
-    year = "1996"
+    year = "1996",
+    runTime = "142 min"
 )
 val sampleMovie2= DomainMovieModel(
     actors = "farshad1",
@@ -31,7 +32,9 @@ val sampleMovie2= DomainMovieModel(
     poster = "rty1",
     rated = "R",
     title = "movie title",
-    year = "1996"
+    year = "1996",
+    runTime = "142 min"
+
 )
 val sampleMovie3= DomainMovieModel(
     actors = "farshad",
@@ -45,7 +48,8 @@ val sampleMovie3= DomainMovieModel(
     poster = "rty",
     rated = "R",
     title = "movie title",
-    year = "1996"
+    year = "1996",
+    runTime = "142 min"
 )
 
 class SampleGenresModel: PreviewParameterProvider<GenresModel> {

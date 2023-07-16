@@ -65,3 +65,5 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 
 val seed = Color(0xFF875300)
+val myRed= Color(0xFFBE1414)
+val myYellow= Color(0xFFFFC107)

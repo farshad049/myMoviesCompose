@@ -6,8 +6,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.farshad.moviesAppCompose.data.model.mapper.MovieMapper
+import com.farshad.moviesAppCompose.data.model.network.GenresModel
+import com.farshad.moviesAppCompose.data.model.ui.Resource
 import com.farshad.moviesAppCompose.data.remote.ApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,6 +19,13 @@ class MovieByGenreViewModel @Inject constructor(
     private val apiClient: ApiClient,
     private val movieMapper: MovieMapper
 ): ViewModel() {
+
+    private val _allGenresMovieFlow= MutableStateFlow<List<GenresModel>>(emptyList())
+    val allGenresMovieFlow = _allGenresMovieFlow.asStateFlow()
+
+    private val _selectedFlow= MutableStateFlow<GenresModel>(GenresModel())
+    val selectedFlow = _allGenresMovieFlow.asStateFlow()
+
 
 
 

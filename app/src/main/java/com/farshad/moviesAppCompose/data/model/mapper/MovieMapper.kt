@@ -19,7 +19,9 @@ class MovieMapper @Inject constructor() {
             poster=networkMovieModel?.poster ?:"",
             rated=networkMovieModel?.rated ?:"",
             title=networkMovieModel?.title ?:"",
-            year=networkMovieModel?.year ?:""
+            year=networkMovieModel?.year ?:"",
+            runTime = networkMovieModel?.runtime?:""
         )
     }
+
 }

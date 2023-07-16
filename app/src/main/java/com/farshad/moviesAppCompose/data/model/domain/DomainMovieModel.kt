@@ -12,6 +12,7 @@ val plot: String = "",
 val poster: String = "",
 val rated: String = "",
 val title: String = "",
-val year: String = ""
+val year: String = "",
+val runTime: String = ""
 )
 
