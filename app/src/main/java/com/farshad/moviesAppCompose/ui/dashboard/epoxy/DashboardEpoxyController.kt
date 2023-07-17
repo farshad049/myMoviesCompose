@@ -76,7 +76,7 @@ class DashboardEpoxyController(
         val genresList= data2.map {
             GenreIconModel(
                 genre = it,
-                onclick = {genreId, genreName -> onClicks.onGenreClick(genreId , genreName)}
+                onclick = {genreId, genreName -> onClicks.onGenreClick(genreId )}
             ).id(it.id)
         }
         CarouselModel_()

@@ -11,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.farshad.moviesAppCompose.NavGraphDirections
 import com.farshad.moviesAppCompose.databinding.FragmentMovieListByGenreBinding
+import com.farshad.moviesAppCompose.ui.dashboard.DashboardScreenWithViewModel
 import com.farshad.moviesAppCompose.ui.movieListByGenre.epoxy.MovieListByGenreController
+import com.farshad.moviesAppCompose.uiCompose.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -41,32 +43,38 @@ class MovieListByGenreFragment : Fragment() {
 
 
         //if the value is not what has been defaulted in nav_graph, then run this code
-        if (safeArg.genreId != -1){
-            viewModel.submitQuery(safeArg.genreId)
-        }
+//        if (safeArg.genreId != -1){
+//            viewModel.submitQuery(safeArg.genreId)
+//        }
+//
+//
+//        lifecycleScope.launch{
+//            viewModel.movieByGenreFlow.collectLatest {data->
+//                controller.submitData(data)
+//            }
+//        }
+//
+//        binding.epoxyRecyclerView.setControllerAndBuildModels(controller)
+//
+//
+//
+//
+//
+//
+//        binding.swipeToRefresh.setOnRefreshListener{
+//            viewModel.pagingSource?.invalidate()
+//            if (safeArg.genreId != -1){
+//                viewModel.submitQuery(safeArg.genreId)
+//            }
+//            viewModel.pagingSource?.invalidate()
+//            viewModel.movieByGenreFlow
+//            binding.swipeToRefresh.isRefreshing = false
+//        }
 
-
-        lifecycleScope.launch{
-            viewModel.movieByGenreFlow.collectLatest {data->
-                controller.submitData(data)
+        binding.myComposable.setContent {
+            AppTheme {
+                MovieByGenreScreenWithViewModel(safeArg = safeArg.genreId)
             }
-        }
-
-        binding.epoxyRecyclerView.setControllerAndBuildModels(controller)
-
-
-
-
-
-
-        binding.swipeToRefresh.setOnRefreshListener{
-            viewModel.pagingSource?.invalidate()
-            if (safeArg.genreId != -1){
-                viewModel.submitQuery(safeArg.genreId)
-            }
-            viewModel.pagingSource?.invalidate()
-            viewModel.movieByGenreFlow
-            binding.swipeToRefresh.isRefreshing = false
         }
 
 

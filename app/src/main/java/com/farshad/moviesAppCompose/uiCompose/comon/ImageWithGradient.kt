@@ -47,7 +47,10 @@ fun ImageWithGradient(
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.primary
         )
-        .shadow(elevation = 6.dp, spotColor = MaterialTheme.colorScheme.onBackground)
+        .shadow(
+            elevation = 6.dp, spotColor = MaterialTheme.colorScheme.onBackground,
+            shape = MaterialTheme.shapes.medium
+        )
         .background(
             shape = MaterialTheme.shapes.medium,
             color = MaterialTheme.colorScheme.outline

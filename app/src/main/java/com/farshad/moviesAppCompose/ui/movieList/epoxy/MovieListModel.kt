@@ -4,8 +4,9 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import coil.load
 import com.farshad.moviesAppCompose.R
-import com.farshad.moviesAppCompose.databinding.ModelMovieListItemBinding
 import com.farshad.moviesAppCompose.data.model.domain.DomainMovieModel
+import com.farshad.moviesAppCompose.databinding.ModelMovieListItemBinding
+
 import com.farshad.moviesAppCompose.epoxy.ViewBindingKotlinModel
 
 data class MovieListModel(

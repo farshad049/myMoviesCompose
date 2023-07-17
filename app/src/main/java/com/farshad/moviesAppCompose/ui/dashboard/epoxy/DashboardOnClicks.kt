@@ -6,8 +6,8 @@ import com.farshad.moviesAppCompose.ui.dashboard.DashboardFragmentDirections
 
 class DashboardOnClicks(private val navController: NavController) {
 
-    fun onGenreClick(genreId: Int,genreName:String){
-        val directions= DashboardFragmentDirections.actionDashboardFragmentToMovieListByGenre(genreId,genreName)
+    fun onGenreClick(genreId: Int){
+        val directions= DashboardFragmentDirections.actionDashboardFragmentToMovieListByGenre(genreId)
         navController.navigate(directions)
     }
 

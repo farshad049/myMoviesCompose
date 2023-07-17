@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.farshad.moviesAppCompose.util.SampleGenresModel
+import com.farshad.moviesAppCompose.util.sampleGenreList
 
 @Composable
 fun SuggestionChipLazyRow(
@@ -63,11 +64,11 @@ fun ChipSuggestionItem(
 
 @DarkAndLightPreview
 @Composable
-private fun Preview(
-    @PreviewParameter(SampleGenresModel::class) genreItem: GenresModel){
+private fun Preview()
+{
     AppTheme() {
         SuggestionChipLazyRow(
-            list = listOf(genreItem),
+            list = sampleGenreList,
             onClick = {}
         )
     }

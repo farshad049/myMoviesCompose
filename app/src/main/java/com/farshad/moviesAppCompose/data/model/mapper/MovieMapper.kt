@@ -20,7 +20,7 @@ class MovieMapper @Inject constructor() {
             rated=networkMovieModel?.rated ?:"",
             title=networkMovieModel?.title ?:"",
             year=networkMovieModel?.year ?:"",
-            runTime = networkMovieModel?.runtime?:""
+            runTime = networkMovieModel?.runtime ?:""
         )
     }
 

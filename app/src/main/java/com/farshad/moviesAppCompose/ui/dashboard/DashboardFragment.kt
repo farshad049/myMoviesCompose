@@ -61,7 +61,7 @@ class DashboardFragment: Fragment() {
 
         binding.myComposable.setContent {
             AppTheme() {
-                DashboardScreenWithViewModel()
+                DashboardScreenWithViewModel(dashboardOnClicks = onClicks)
             }
         }
 

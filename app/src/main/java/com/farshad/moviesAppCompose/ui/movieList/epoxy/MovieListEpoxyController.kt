@@ -3,6 +3,7 @@ package com.farshad.moviesAppCompose.ui.movieList.epoxy
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.farshad.moviesAppCompose.data.model.domain.DomainMovieModel
+
 import com.farshad.moviesAppCompose.epoxy.ModelMovieListShimmer
 import java.util.*
 

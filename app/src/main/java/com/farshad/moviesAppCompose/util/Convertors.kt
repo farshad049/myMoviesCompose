@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject
 
-class Convertors {
+class Convertors @Inject constructor(){
 
 
     fun convertBitmapTOBase64(bitmap: Bitmap):String{

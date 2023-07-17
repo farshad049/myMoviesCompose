@@ -9,6 +9,7 @@ import com.farshad.moviesAppCompose.data.model.mapper.MovieMapper
 import com.farshad.moviesAppCompose.data.model.network.GenresModel
 import com.farshad.moviesAppCompose.data.model.ui.Resource
 import com.farshad.moviesAppCompose.data.remote.ApiClient
+import com.farshad.moviesAppCompose.data.repository.DashboardRepository
 import com.farshad.moviesAppCompose.ui.movieListByGenre.model.UiGenresModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -17,25 +18,48 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieByGenreViewModel @Inject constructor(
     private val apiClient: ApiClient,
-    private val movieMapper: MovieMapper
+    private val movieMapper: MovieMapper,
+    private val repository: DashboardRepository
 ): ViewModel() {
+
+    init {
+        getAllGenres()
+    }
 
     private val _allGenresMovieFlow= MutableStateFlow<List<GenresModel>>(emptyList())
     val allGenresMovieFlow = _allGenresMovieFlow.asStateFlow()
 
-    private val _selectedGenreFlow= MutableStateFlow<GenresModel>(GenresModel())
+    private val _selectedGenreFlow= MutableStateFlow<Int>(1)
     val selectedGenreFlow = _selectedGenreFlow.asStateFlow()
+
+    fun getAllGenres(){
+        viewModelScope.launch {
+            val response= repository.getAllGenres()
+            if (response.isNotEmpty()) _allGenresMovieFlow.emit(response)
+        }
+    }
+
+    fun updateSelectedGenreId(genreId: Int){
+        viewModelScope.launch {
+            _selectedGenreFlow.emit(genreId)
+        }
+    }
+
+
+
+
 
     val dataForMovieByGenreScreen: Flow<Resource<UiGenresModel>> =
         combine(
             allGenresMovieFlow,
             selectedGenreFlow
-        ){allGenres, selectedGenre->
+        ){allGenres, selectedGenreId->
             val combinedData=
                 if (allGenres.isNotEmpty()){
                     Resource.Success(
@@ -43,7 +67,7 @@ class MovieByGenreViewModel @Inject constructor(
                             genreList = allGenres.map {
                                 UiGenresModel.GenreWithFavorite(
                                     genre = it,
-                                    isSelected = selectedGenre == it
+                                    isSelected = selectedGenreId == it.id
                                 )
                             }
                         )
@@ -62,8 +86,9 @@ class MovieByGenreViewModel @Inject constructor(
 
 
 
+
+
     private var genreId:Int=0
-    //every time pagingSource be called, this block of code will be run because every time user may type a new string to be searched
      var pagingSource: MovieByGenreDataSource? =null
         get() {
             if (field == null || field?.invalid == true){

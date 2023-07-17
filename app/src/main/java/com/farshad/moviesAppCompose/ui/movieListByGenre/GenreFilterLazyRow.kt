@@ -25,7 +25,7 @@ import com.farshad.moviesAppCompose.util.DarkAndLightPreview
 fun GenreFilterLazyRow(
     modifier: Modifier= Modifier,
     list: List<UiGenresModel.GenreWithFavorite>,
-    onClick: (GenresModel)-> Unit
+    onClick: (Int)-> Unit
 ){
     val listForRow by remember { mutableStateOf(list) }
 
@@ -51,15 +51,15 @@ fun GenreFilterLazyRow(
 @Composable
 fun GenreFilterItem(
     uiGenresModel: UiGenresModel.GenreWithFavorite,
-    onClick: (GenresModel) -> Unit
+    onClick: (Int) -> Unit
 ){
     FilterChip(
         selected = uiGenresModel.isSelected,
-        onClick = {onClick(uiGenresModel.genre)},
+        onClick = {onClick(uiGenresModel.genre.id)},
         label = { Text(text = uiGenresModel.genre.name)},
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.inversePrimary,
-            labelColor = MaterialTheme.colorScheme.onSurface
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            labelColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
     )
 
