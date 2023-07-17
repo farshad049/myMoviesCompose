@@ -71,7 +71,7 @@ fun MovieByGenreScreenWithViewModel(
     safeArg: Int
 //    onMovieClick: (Int) -> Unit
 ) {
-    movieByGenreViewModel.submitQuery(safeArg)
+
 
     val genreList by movieByGenreViewModel.dataForMovieByGenreScreen.collectAsStateWithLifecycle(
         initialValue = Resource.Loading
@@ -86,7 +86,7 @@ fun MovieByGenreScreenWithViewModel(
                 genreList = (genreList as Resource.Success<UiGenresModel>).data.genreList,
                 movieList = movieList,
                 onGenreClick = { genreId ->
-                    movieByGenreViewModel.updateSelectedGenreId(genreId)
+                   // movieByGenreViewModel.updateSelectedGenreId(genreId)
                     movieByGenreViewModel.submitQuery(genreId)
                 },
                 onMovieClick = {},

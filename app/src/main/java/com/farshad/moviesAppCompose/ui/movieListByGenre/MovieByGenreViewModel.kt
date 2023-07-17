@@ -1,5 +1,6 @@
 package com.farshad.moviesAppCompose.ui.movieListByGenre
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +37,7 @@ class MovieByGenreViewModel @Inject constructor(
     private val _allGenresMovieFlow= MutableStateFlow<List<GenresModel>>(emptyList())
     val allGenresMovieFlow = _allGenresMovieFlow.asStateFlow()
 
-    private val _selectedGenreFlow= MutableStateFlow<Int>(1)
+    private val _selectedGenreFlow= MutableStateFlow(2)
     val selectedGenreFlow = _selectedGenreFlow.asStateFlow()
 
     fun getAllGenres(){
@@ -47,7 +49,7 @@ class MovieByGenreViewModel @Inject constructor(
 
     fun updateSelectedGenreId(genreId: Int){
         viewModelScope.launch {
-            _selectedGenreFlow.emit(genreId)
+            _selectedGenreFlow.value= genreId
         }
     }
 
@@ -67,7 +69,7 @@ class MovieByGenreViewModel @Inject constructor(
                             genreList = allGenres.map {
                                 UiGenresModel.GenreWithFavorite(
                                     genre = it,
-                                    isSelected = selectedGenreId == it.id
+                                    isSelected = it.id == selectedGenreId
                                 )
                             }
                         )
@@ -76,11 +78,12 @@ class MovieByGenreViewModel @Inject constructor(
                      Resource.Loading
                  }
             return@combine combinedData
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = Resource.Loading
-        )
+        }
+//            .stateIn(
+//            scope = viewModelScope,
+//            started = SharingStarted.WhileSubscribed(),
+//            initialValue = Resource.Loading
+//        )
 
 
 
@@ -110,6 +113,11 @@ class MovieByGenreViewModel @Inject constructor(
     fun submitQuery(genreIdFromFragment:Int){
         genreId= genreIdFromFragment
         pagingSource?.invalidate()
+
+        viewModelScope.launch {
+            _selectedGenreFlow.value= genreIdFromFragment
+        }
+
     }
 
 }

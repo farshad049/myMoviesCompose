@@ -30,11 +30,11 @@
             android:defaultValue="-1"
             app:argType="integer"
             />
-        <argument
-            android:name="genreName"
-            android:defaultValue="no genre"
-            app:argType="string"
-            />
+<!--        <argument-->
+<!--            android:name="genreName"-->
+<!--            android:defaultValue="no genre"-->
+<!--            app:argType="string"-->
+<!--            />-->
     </fragment>
 
 

@@ -50,6 +50,7 @@ class Convertors @Inject constructor(){
 
 
     fun convertListToText(list : List<String>): String{
+
         val sb = StringBuilder()
         for (element in list) {
             sb.append(element).append(", ")

@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,7 +34,7 @@ fun GenreFilterLazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
         items(
-            items = listForRow, key = {it.hashCode()}
+            items = list, key = {it.hashCode()}
         ){item->
             GenreFilterItem(
                 uiGenresModel = item,
@@ -47,20 +47,20 @@ fun GenreFilterLazyRow(
 
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun GenreFilterItem(
     uiGenresModel: UiGenresModel.GenreWithFavorite,
     onClick: (Int) -> Unit
 ){
-    FilterChip(
-        selected = uiGenresModel.isSelected,
-        onClick = {onClick(uiGenresModel.genre.id)},
-        label = { Text(text = uiGenresModel.genre.name)},
-        colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+    SuggestionChip(
+        colors = SuggestionChipDefaults.suggestionChipColors(
+            containerColor = if (uiGenresModel.isSelected) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.secondaryContainer,
             labelColor = MaterialTheme.colorScheme.onSecondaryContainer
-        )
+        ),
+        border = null,
+        label = { Text(text = uiGenresModel.genre.name) } ,
+        onClick = { onClick(uiGenresModel.genre.id) },
     )
 
 }

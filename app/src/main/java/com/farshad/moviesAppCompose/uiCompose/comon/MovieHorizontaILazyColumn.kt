@@ -132,9 +132,9 @@ fun MovieHorizontalItem(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = TextStyle(
-                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                            fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
-                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontStyle = MaterialTheme.typography.titleMedium.fontStyle,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
@@ -145,6 +145,7 @@ fun MovieHorizontalItem(
                 }
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                     ) {
                     Icon(
@@ -158,13 +159,16 @@ fun MovieHorizontalItem(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Icon(
-                        painter = painterResource(id = R.drawable.round_access_time_24),
+                        painter = painterResource(id = R.drawable.castle),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                         contentDescription =""
                     )
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = movie.runTime,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = movie.country,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     
                 }

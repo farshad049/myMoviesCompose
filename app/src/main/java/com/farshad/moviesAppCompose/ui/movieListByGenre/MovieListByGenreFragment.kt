@@ -1,6 +1,7 @@
 package com.farshad.moviesAppCompose.ui.movieListByGenre
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,8 @@ class MovieListByGenreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val controller= MovieListByGenreController(::onMovieClick,safeArg.genreName)
+
+        //val controller= MovieListByGenreController(::onMovieClick,safeArg.genreName)
 
 
         //if the value is not what has been defaulted in nav_graph, then run this code
